@@ -1,5 +1,7 @@
 package com.knights.agoras;
 
+import android.content.Intent;
+import android.graphics.Color;
 import android.os.AsyncTask;
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
@@ -9,7 +11,9 @@ import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.CircleOptions;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
 import org.json.JSONArray;
@@ -55,13 +59,33 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         LatLng TelAviv = new LatLng(32.0853, 34.7818);
         mMap.addMarker(new MarkerOptions().position(TelAviv).title("Marker in Tel-Aviv"));
         mMap.moveCamera(CameraUpdateFactory.newLatLng(TelAviv));
+        mMap.animateCamera(CameraUpdateFactory.zoomTo(14), 500, null);
+        CircleOptions circleOptions = new CircleOptions()
+                .center(TelAviv)
+                .fillColor(0x4000ff00)
+                .radius(400)
+                .strokeWidth(1);
+        mMap.addCircle(circleOptions);
+        mMap.setOnInfoWindowClickListener(new GoogleMap.OnInfoWindowClickListener() {
+
+            @Override
+            public void onInfoWindowClick(Marker mark) {
+                changeActivity(mark.getTitle());
+            }
+        });
+    }
+
+    public void changeActivity(String name){
+        Intent intent = new Intent(this, MainActivity.class);
+        intent.putExtra("Info",name);
+        startActivity(intent);
     }
 
     public void Markers(String urlString, GoogleMap mMap)
     {
         JSONParser jParser = new JSONParser();
         // Getting JSON from URL
-        JSONObject json = jParser.getJSONFromUrl(urlString);
+        JSONObject json = jParser.getJSONFromUrl(urlString,"32.0853","34.7818");
         try {
             // Getting JSON Array
             JSONArray markers = null;
@@ -78,7 +102,19 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
                 LatLng mark = new LatLng(Long, Lat);
                 mMap.addMarker(new MarkerOptions().position(mark).title(Name));
-                mMap.moveCamera(CameraUpdateFactory.newLatLng(mark));
+                CircleOptions circleOptions = new CircleOptions()
+                        .center(mark)
+                        .fillColor(0x4000ff00)
+                        .radius(400)
+                        .strokeWidth(1);
+                mMap.addCircle(circleOptions);
+                mMap.setOnInfoWindowClickListener(new GoogleMap.OnInfoWindowClickListener() {
+
+                    @Override
+                    public void onInfoWindowClick(Marker marker) {
+                        changeActivity(marker.getTitle());
+                    }
+                });
             }
         } catch (JSONException e) {
             e.printStackTrace();
