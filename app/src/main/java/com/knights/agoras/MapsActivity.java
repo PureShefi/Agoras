@@ -2,6 +2,7 @@ package com.knights.agoras;
 
 import android.content.Intent;
 import android.graphics.Color;
+import android.location.Location;
 import android.os.AsyncTask;
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
@@ -14,9 +15,11 @@ import com.google.android.gms.maps.model.CircleOptions;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.android.gms.vision.barcode.Barcode;
 import com.parse.FindCallback;
 import com.parse.GetCallback;
 import com.parse.ParseException;
+import com.parse.ParseGeoPoint;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
 
@@ -28,8 +31,7 @@ import java.util.Map;
 public class MapsActivity extends FragmentActivity implements OnMapReadyCallback {
 
     private GoogleMap mMap;
-    private static final String TAG_Long = "Long";
-    private static final String TAG_Lat = "Lat";
+    private static final String TAG_LatLong = "LatLong";
     private static final String TAG_Radius = "radius";
     private static final String TAG_Name = "name";
     private static final String TAG_Color = "Color";
@@ -57,12 +59,15 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     public void parseMarker()
     {
         ParseQuery<ParseObject> query = ParseQuery.getQuery("Agoras");
+        //ParseGeoPoint myPoint = new ParseGeoPoint(32.07,34.7818);
+        //query.whereWithinKilometers("LatLong", myPoint, 10);
         query.findInBackground( new FindCallback<ParseObject>() {
             public void done(List<ParseObject> objects, ParseException e) {
                 if (e == null) {
                     for(ParseObject object:objects) {
-                        Float Long = Float.parseFloat(object.getNumber(TAG_Long).toString());
-                        Float Lat = Float.parseFloat(object.getNumber(TAG_Lat).toString());
+                        ParseGeoPoint Point = object.getParseGeoPoint(TAG_LatLong);
+                        Double Long = Point.getLongitude();
+                        Double Lat = Point.getLatitude();
                         int Radius = Integer.parseInt(object.getNumber(TAG_Radius).toString());
                         String Name = object.getString(TAG_Name);
                         final String Url = object.getString(TAG_URL);
@@ -73,7 +78,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                         Marker toAdd = mMap.addMarker(new MarkerOptions().position(mark).title(Name));
                         markerMap.put(toAdd,Url);
                         mMap.moveCamera(CameraUpdateFactory.newLatLng(mark));
-                        mMap.animateCamera(CameraUpdateFactory.zoomTo(14), 500, null);
+                        mMap.animateCamera(CameraUpdateFactory.zoomTo(14), 700, null);
                         CircleOptions circleOptions = new CircleOptions()
                                 .center(mark)
                                 .fillColor(color)

@@ -19,7 +19,6 @@
         android:layout_alignParentEnd="true" />
 
     <ImageView
-        android:src="@drawable/loading"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/imageViewMain"
@@ -28,4 +27,26 @@
         android:contentDescription="Image"
         android:scaleType="centerCrop"
         android:layout_gravity="center"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceSmall"
+        android:text="There are currently 137 neighbors in your community"
+        android:id="@+id/textView2"
+        android:layout_above="@+id/button"
+        android:layout_centerHorizontal="true" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="View Community"
+        android:id="@+id/button"
+        android:onClick="goToGroup"
+        android:layout_alignParentBottom="true"
+        android:layout_toStartOf="@+id/textViewTitle"
+        android:layout_marginBottom="93dp" />
+
+
+
 </RelativeLayout>

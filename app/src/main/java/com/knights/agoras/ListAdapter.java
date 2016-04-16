@@ -31,18 +31,24 @@ public class ListAdapter extends ArrayAdapter<FeedItem> {
     public View getView(int position, View convertView, ViewGroup parent){
         LayoutInflater inflater = ((Activity) context).getLayoutInflater();
         View v = inflater.inflate(R.layout.list_view_item, parent, false);
-        TextView title = (TextView) v.findViewById(R.id.textViewTitle);
-        title.setText(list.get(position).Title + " - ");
-        TextView writer = (TextView) v.findViewById(R.id.textViewWriter);
-        writer.setText(list.get(position).Writer);
-        TextView info = (TextView) v.findViewById(R.id.textViewInfo);
-        info.setText(list.get(position).Info);
-        TextView category = (TextView) v.findViewById(R.id.textViewCategory);
-        category.setText(list.get(position).Category + " ");
-        TextView date = (TextView) v.findViewById(R.id.textViewDate);
-        SimpleDateFormat dt1 = new SimpleDateFormat("yyyy.MM.dd");
-        date.setText(dt1.format(list.get(position).When));
+        try {
+            TextView title = (TextView) v.findViewById(R.id.textViewTitle);
+            title.setText(list.get(position).Title + " - ");
+            TextView writer = (TextView) v.findViewById(R.id.textViewWriter);
+            writer.setText(list.get(position).Writer);
+            TextView info = (TextView) v.findViewById(R.id.textViewInfo);
+            info.setText(list.get(position).Info);
+            TextView category = (TextView) v.findViewById(R.id.textViewCategory);
+            category.setText(list.get(position).Category + " ");
+            TextView date = (TextView) v.findViewById(R.id.textViewDate);
+            SimpleDateFormat dt1 = new SimpleDateFormat("yyyy.MM.dd");
+            date.setText(dt1.format(list.get(position).When));
+        }
+        catch (Exception e)
+        {}
+        finally {
+            return v;
+        }
 
-        return v;
     }
 }
