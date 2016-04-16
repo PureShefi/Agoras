@@ -41,11 +41,11 @@ import java.util.List;
 public class MapsActivity extends FragmentActivity implements OnMapReadyCallback {
 
     private GoogleMap mMap;
-    private static final String TAG_Long = "long";
-    private static final String TAG_Lat = "lat";
+    private static final String TAG_Long = "Long";
+    private static final String TAG_Lat = "Lat";
     private static final String TAG_Radius = "radius";
     private static final String TAG_Name = "name";
-    private static final String TAG_Color = "color";
+    private static final String TAG_Color = "Color";
     private static final String TAG_Marker = "marker";
 
     @Override
@@ -63,6 +63,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         mMap = googleMap;
 
         // Add a marker in Sydney and move the camera
+        /*
         LatLng TelAviv = new LatLng(32.0853, 34.7818);
         mMap.addMarker(new MarkerOptions().position(TelAviv).title("Marker in Tel-Aviv"));
         mMap.moveCamera(CameraUpdateFactory.newLatLng(TelAviv));
@@ -79,7 +80,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             public void onInfoWindowClick(Marker mark) {
                 changeActivity(mark.getTitle());
             }
-        });
+        });*/
+        parseMarker();
     }
 
     public void parseMarker()
@@ -92,15 +94,16 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                     ParseObject object = scoreList.get(0);
                     Float Long = Float.parseFloat(object.getNumber(TAG_Long).toString());
                     Float Lat = Float.parseFloat(object.getNumber(TAG_Lat).toString());
-                    Number Radius = object.getNumber(TAG_Radius);
+                    int Radius = Integer.parseInt(object.getNumber(TAG_Radius).toString());
                     String Name = object.getString(TAG_Name);
+                    int color = Color.parseColor("0x40"+object.getString(TAG_Color));
 
                     LatLng mark = new LatLng(Long, Lat);
                     mMap.addMarker(new MarkerOptions().position(mark).title(Name));
                     CircleOptions circleOptions = new CircleOptions()
                             .center(mark)
-                            .fillColor(0x4000ff00)
-                            .radius(400)
+                            .fillColor(color)
+                            .radius(Radius)
                             .strokeWidth(1);
                     mMap.addCircle(circleOptions);
                     mMap.setOnInfoWindowClickListener(new GoogleMap.OnInfoWindowClickListener() {
