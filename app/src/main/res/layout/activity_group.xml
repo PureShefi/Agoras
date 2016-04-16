@@ -35,7 +35,8 @@
         android:text="There are currently 137 neighbors in your community"
         android:id="@+id/textView2"
         android:layout_above="@+id/button"
-        android:layout_centerHorizontal="true" />
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="48dp" />
 
     <Button
         android:layout_width="wrap_content"
@@ -43,9 +44,9 @@
         android:text="View Community"
         android:id="@+id/button"
         android:onClick="goToGroup"
+        android:layout_marginBottom="91dp"
         android:layout_alignParentBottom="true"
-        android:layout_toStartOf="@+id/textViewTitle"
-        android:layout_marginBottom="93dp" />
+        android:layout_toStartOf="@+id/textViewTitle" />
 
 
 
