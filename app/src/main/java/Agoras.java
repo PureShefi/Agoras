@@ -9,5 +9,7 @@ public class Agoras extends ParseObject{
     public String getName() {return this.getString("Name");}
     public void setColor(String color) { this.put("Color",color);}
     public String getColor() {return this.getString("Color");}
+    public void setUrl(String url) { this.put("ImgUrl",url);}
+    public String getUrl() {return this.getString("ImgUrl");}
 
 }

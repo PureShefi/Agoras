@@ -27,10 +27,6 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-
-        Parse.initialize(this);
-        Parse.enableLocalDatastore(this);
-
         Logo = (TextView)findViewById(R.id.textViewTitle);
         Logo.setText(getIntent().getStringExtra("Info"));
 
@@ -49,9 +45,9 @@ public class MainActivity extends AppCompatActivity {
             item1.When = new Date(2016,3,14);
 
             FeedItem item2 = new FeedItem();
-            item2.Category = "Sex";
-            item2.Info = "I need dog sex, I live at Aven Gvirol 8";
-            item2.Title = "Need sex";
+            item2.Category = "School";
+            item2.Info = "I'm giving free front end lessons, call me if you need help";
+            item2.Title = "Free Tuturing";
             item2.Writer = "Eldad Zipori";
             item2.When = new Date(2016,4,14);
 
