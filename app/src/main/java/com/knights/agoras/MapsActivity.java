@@ -15,6 +15,11 @@ import com.google.android.gms.maps.model.CircleOptions;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.parse.FindCallback;
+import com.parse.GetCallback;
+import com.parse.ParseException;
+import com.parse.ParseObject;
+import com.parse.ParseQuery;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -30,6 +35,7 @@ import java.net.MalformedURLException;
 import java.net.ProtocolException;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.List;
 
 
 public class MapsActivity extends FragmentActivity implements OnMapReadyCallback {
@@ -39,6 +45,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     private static final String TAG_Lat = "lat";
     private static final String TAG_Radius = "radius";
     private static final String TAG_Name = "name";
+    private static final String TAG_Color = "color";
     private static final String TAG_Marker = "marker";
 
     @Override
@@ -75,6 +82,40 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         });
     }
 
+    public void parseMarker()
+    {
+        ParseQuery<ParseObject> query = ParseQuery.getQuery("Agoras");
+        query.whereEqualTo("name", "Cool");
+        query.findInBackground(new FindCallback<ParseObject>() {
+            public void done(List<ParseObject> scoreList, ParseException e) {
+                if (e == null) {
+                    ParseObject object = scoreList.get(0);
+                    Float Long = Float.parseFloat(object.getNumber(TAG_Long).toString());
+                    Float Lat = Float.parseFloat(object.getNumber(TAG_Lat).toString());
+                    Number Radius = object.getNumber(TAG_Radius);
+                    String Name = object.getString(TAG_Name);
+
+                    LatLng mark = new LatLng(Long, Lat);
+                    mMap.addMarker(new MarkerOptions().position(mark).title(Name));
+                    CircleOptions circleOptions = new CircleOptions()
+                            .center(mark)
+                            .fillColor(0x4000ff00)
+                            .radius(400)
+                            .strokeWidth(1);
+                    mMap.addCircle(circleOptions);
+                    mMap.setOnInfoWindowClickListener(new GoogleMap.OnInfoWindowClickListener() {
+
+                        @Override
+                        public void onInfoWindowClick(Marker marker) {
+                            changeActivity(marker.getTitle());
+                        }
+                    });
+                } else {
+                    Log.d("score", "Error: " + e.getMessage());
+                }
+            }
+        });
+    }
     public void changeActivity(String name){
         Intent intent = new Intent(this, MainActivity.class);
         intent.putExtra("Info",name);

@@ -23,6 +23,7 @@
         <item name="colorControlActivated">@color/white</item>
         <item name="colorControlHighlight">@color/white</item>
         <item name="android:textColorHint">@color/iron</item>
+        <item name="android:textColor">@color/accent</item>
 
         <item name="colorButtonNormal">@color/primary_darker</item>
 
